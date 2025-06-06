@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anirban Ghosh - Portfolio</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/FFD700/000000?text=AG" type="image/png">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom CSS to override/add specific styles (if needed) and define animations -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            position: relative;
+            /* Needed for pseudo-element positioning */
+            overflow-x: hidden;
+            /* Prevent horizontal scroll from ribbon */
+            background-color: #0f172a;
+            /* Base slate-900 - ONLY DARK MODE */
+            color: #e2e8f0;
+            /* slate-200 - ONLY DARK MODE */
+        }
+
+        /* Creative Dynamic Background Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            /* Behind content */
+            opacity: 0.3;
+            /* Subtle */
+            pointer-events: none;
+            /* Allow clicks through */
+            background-size: 200% 200%;
+            /* Larger to allow movement */
+            animation: backgroundPan 30s linear infinite alternate;
+            /* Slower, smoother pan */
+            background-image: radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.2) 0%, transparent 50%);
+        }
+
+        @keyframes backgroundPan {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        /* Navbar backdrop effect */
+        .navbar-blur {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(15, 23, 42, 0.7);
+            /* slate-900 with transparency */
+        }
+
+        /* Custom button styles */
+        .btn-primary {
+            background-color: #2563eb;
+            /* blue-600 */
+            color: #ffffff;
+            /* white */
+            padding: 1rem 2rem;
+            /* px-8 py-4 */
+            border-radius: 9999px;
+            /* rounded-full */
+            font-weight: 600;
+            /* font-semibold */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            /* shadow-lg */
+            transition: all 0.3s ease-in-out;
+            /* transition duration-300 ease-in-out */
+            transform: scale(1);
+            /* transform */
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            /* blue-700 */
+            transform: scale(1.05);
+            /* hover:scale-105 */
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            border: 1px solid #60a5fa;
+            /* border border-blue-400 */
+            color: #60a5fa;
+            /* text-blue-400 */
+            padding: 1rem 2rem;
+            /* px-8 py-4 */
+            border-radius: 9999px;
+            /* rounded-full */
+            font-weight: 600;
+            /* font-semibold */
+            transition: all 0.3s ease-in-out;
+            /* transition duration-300 ease-in-out */
+            transform: scale(1);
+            /* transform */
+        }
+
+        .btn-outline:hover {
+            background-color: #60a5fa;
+            /* hover:bg-blue-400 */
+            color: #ffffff;
+            /* hover:text-white */
+            transform: scale(1.05);
+            /* hover:scale-105 */
+        }
+
+        .btn-outline:active {
+            transform: scale(0.98);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Project card hover effect */
+        .project-card-hover:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-card-hover:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Smooth scroll for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Basic fade-in animation for sections on scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tech Stack Moving Ribbon */
+        .tech-ribbon-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            padding: 2rem 0;
+            /* Vertical padding for the ribbon */
+        }
+
+        .tech-ribbon {
+            display: flex;
+            animation: scroll-left 30s linear infinite;
+            /* Adjust duration for speed */
+            width: max-content;
+            /* Ensure content dictates width */
+        }
+
+        .tech-ribbon:hover {
+            animation-play-state: paused;
+            /* Pause on hover */
+        }
+
+        .tech-item {
+            flex-shrink: 0;
+            /* Prevent items from shrinking */
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            /* Space between icon and text */
+            padding: 1rem 1.5rem;
+            /* Padding around each item */
+            margin-right: 2rem;
+            /* Space between items */
+            border-radius: 0.75rem;
+            /* rounded-xl */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            background-color: #1e293b;
+            /* slate-800 */
+            color: #e2e8f0;
+            /* slate-200 */
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            /* Subtle lift on hover */
+        }
+
+        /* Removed .tech-item svg rule */
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+
+            /* Scrolls half the duplicated content */
+        }
+
+        /* Typing Effect for Hero Subtitle */
+        #dynamic-subtitle {
+            font-family: 'Poppins', sans-serif;
+            /* Applied Poppins font */
+            overflow: hidden;
+            /* Ensures the text is not visible until typed */
+            white-space: nowrap;
+            /* Keeps the content on a single line */
+            letter-spacing: .05em;
+            /* Adjust as needed */
+            min-height: 4rem;
+            /* Fixed height to prevent layout shifts */
+            display: flex;
+            align-items: center;
+            /* Vertically center content */
+            text-align: left;
+            /* Ensure left alignment */
+        }
+
+        /* Waving Hand Animation */
+        @keyframes wave {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            10% {
+                transform: rotate(14deg);
+            }
+
+            20% {
+                transform: rotate(-8deg);
+            }
+
+            30% {
+                transform: rotate(14deg);
+            }
+
+            40% {
+                transform: rotate(-4deg);
+            }
+
+            50% {
+                transform: rotate(10deg);
+            }
+
+            60% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        .wave-hand {
+            animation: wave 2.5s infinite;
+            transform-origin: 70% 70%;
+            display: inline-block;
+        }
+
+        /* Floating Text Animation */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .float-text {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Achievement Card Flip Effect */
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            height: 400px;
+            /* Increased height for consistency with experience tile */
+            perspective: 1000px;
+            /* 3D perspective */
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.75rem;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front,
+        .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            /* Safari */
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: justify;
+            /* Justify content */
+            background-color: #1e293b;
+            /* slate-800 */
+            color: #e2e8f0;
+            /* slate-200 */
+        }
+
+        .flip-card-front {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+            background-color: #334155;
+            /* slate-700 */
+        }
+
+        /* Achievement Carousel */
+        .achievement-carousel-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-bottom: 2rem;
+            /* Space for dots */
+        }
+
+        .achievement-carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .achievement-slide {
+            flex: 0 0 100%;
+            /* Default for mobile */
+            padding: 0 1rem;
+            /* Padding for the card inside */
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+
+            /* md breakpoint */
+            .achievement-slide {
+                flex: 0 0 50%;
+                /* Two columns on medium screens and up */
+            }
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+            gap: 0.75rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background-color: #64748b;
+            /* slate-500 */
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #3b82f6;
+            /* blue-500 */
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            /* Gap between cards */
+        }
+
+        @media (min-width: 768px) {
+
+            /* md breakpoint */
+            .achievement-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* Two columns on medium screens and up */
+            }
+        }
+
+        /* Removed Custom Scrollbar and Scroll Button styles as requested */
+        .custom-scrollbar {
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scroll-button {
+            background-color: #60a5fa;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .scroll-button:hover {
+            background-color: #3b82f6;
+            transform: translateY(2px);
+        }
+
+        .scroll-button:active {
+            transform: translateY(4px);
+        }
+
+        /* Specific styles for the contact flip card to ensure it flips in place */
+        .flip-card-contact {
+            background-color: transparent;
+            width: 100%;
+            height: 100%;
+            /* Allow height to adjust to content, but ensure inner takes up space */
+            min-height: 450px;
+            /* A reasonable minimum height for the contact form */
+            perspective: 1000px;
+            /* 3D perspective */
+        }
+
+        .flip-card-inner-contact {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            /* Make inner take full height of its container */
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0.75rem;
+            background-color: #1e293b;
+            /* slate-800 - base for inner */
+        }
+
+        /* Ensure front and back are absolutely positioned to overlay each other */
+        .flip-card-front-contact,
+        .flip-card-back-contact {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            /* Safari */
+            backface-visibility: hidden;
+            border-radius: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            /* Center content vertically */
+            padding: 1.5rem;
+            text-align: left;
+            /* Keep content left-aligned as requested */
+            background-color: #1e293b;
+            /* slate-800 - for front */
+            color: #e2e8f0;
+            /* slate-200 */
+        }
+
+        .flip-card-back-contact {
+            transform: rotateY(180deg);
+            background-color: #334155;
+            /* slate-700 - for back */
+        }
+
+        /* Class to trigger the flip */
+        .flip-card-inner-contact.flipped {
+            transform: rotateY(180deg);
+        }
+
+        /* Message box for form submission feedback */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #10b981;
+            /* emerald-500 */
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .message-box.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+
+    <!----------------------------------HTML CODE STARTS FROM HERE----------------------------------------->
+
+</head>
+
+<body class="dark">
+    <div class="min-h-screen flex flex-col">
+
+        <!-- Navbar -->
+        <nav class="fixed w-full z-50 py-4 px-6 md:px-12 flex items-center justify-between navbar-blur">
+            <div class="w-full flex justify-center md:justify-start md:w-auto items-center">
+                <!-- Logo -->
+                <img src="images/signature.png" alt="Anirban" class="h-12 md:h-20 object-contain">
+            </div>
+
+            <!-- Nav links (hidden on small screens) -->
+            <div class="hidden md:flex space-x-8 text-md font-bold">
+                <a href="#about" class="hover:text-blue-400 transition duration-200">About</a>
+                <a href="#professional-journey" class="hover:text-blue-400 transition duration-200">Experience</a>
+                <a href="#projects" class="hover:text-blue-400 transition duration-200">Projects</a>
+                <a href="#contact-blogs-section" class="hover:text-blue-400 transition duration-200">Contact</a>
+            </div>
+        </nav>
+
+
+
+        <!-- Hero Section -->
+        <section
+            class="relative flex flex-col md:flex-row items-center justify-center min-h-screen pt-24 pb-16 px-6 md:px-12 gap-8 md:gap-16 text-center md:text-left overflow-hidden">
+
+            <!-- Background image for small screens -->
+            <img src="images/ghibli.png" alt="Background Ghibli"
+                class="absolute inset-0 w-full h-full object-contain opacity-10 md:hidden z-0">
+
+            <!-- Left content (Text) -->
+            <div
+                class="flex-1 max-w-2xl fade-in-section relative z-10 flex flex-col items-center md:items-start text-center md:text-left">
+                <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
+                    <span class="text-slate-300 text-2xl md:text-3xl font-normal block pt-20 pb-5">Hi! <span
+                            class="wave-hand inline-block">👋</span></span>
+                    <span class="inline-block float-text text-transparent bg-white bg-clip-text mt-2">I'm <strong
+                            class="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text mt-2">Anirban
+                            Ghosh</strong> </span>
+
+                </h1>
+
+                <p id="dynamic-subtitle"
+                    class="text-xl md:text-2xl text-slate-300 mb-4 md:max-w-md min-h-[4rem] flex items-center justify-center text-center md:text-left">
+                </p>
+
+                <p class="text-lg md:text-xl text-slate-300 mb-1 text-center">Bachelor of Technology (Final Year)</p>
+                <p class="text-xl md:text-2xl text-blue-400 font-serif mb-8 text-center">IIT Guwahati</p>
+
+                <div class="flex flex-wrap justify-center md:justify-start gap-5">
+                    <a href="https://drive.google.com/file/d/1YiCCRGNn4LOjL_a1paAnBDCGDG9c9LmF/view?usp=sharing"
+                        target="_blank" rel="noopener noreferrer">
+                        <button class="btn-primary">View Resume</button>
+                    </a>
+                    <a href="https://linkedin.com/in/anirbanghoshiitg" target="_blank" rel="noopener noreferrer">
+                        <button class="btn-outline">LinkedIn</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right image (hidden on small screens) -->
+            <div class="flex-1 flex justify-center md:justify-end fade-in-section relative z-10 hidden md:flex">
+                <img src="images/ghibli.png" alt="Anirban Profile"
+                    class="max-w-xs md:max-w-sm lg:max-w-md w-full h-auto object-cover">
+            </div>
+        </section>
+
+
+
+
+        <!-- About Section -->
+        <section id="about" class="py-16 px-6 md:px-12 shadow-inner fade-in-section">
+            <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <!-- About Me Flip Card -->
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-400">Know More</h2>
+                            <p class="text-lg md:text-xl leading-relaxed text-justify">
+                                I'm currently a final year B.Tech student at <strong class="text-blue-300">Indian
+                                    Institute of Technology, Guwahati.</strong> Passionate about building delightful
+                                digital products that merge user empathy, data insights, and business thinking. I
+                                translate complex problems into intuitive, impactful solutions.
+                                Skilled in product discovery, agile methods, and stakeholder alignment, I collaborate
+                                across teams to drive user-focused outcomes with clarity and purpose.
+
+
+
+                            </p>
+                        </div>
+                        <div class="flip-card-back">
+
+                            <div class="space-y-4 text-lg md:text-xl text-left">
+                                <p><strong class="text-blue-300">Languages:</strong> English, Hindi, Bengali</p>
+                                <p><strong class="text-blue-300">College:</strong> Indian Institute of Technology,
+                                    Guwahati</p>
+                                <p><strong class="text-blue-300">Technical Skills:</strong> Python, HTML, CSS, PowerBI,
+                                    SQL, Data Science</p>
+                                <p><strong class="text-blue-300">Software:</strong> Jira, Canva, Figma, Amplitude,
+                                    Google Analytics</p>
+                                <p><strong class="text-blue-300">Soft Skills:</strong> Good Communication Skills,
+                                    Curious, Driven, Empathetic,
+                                    Balanced, Problem-Solver</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extracurriculars Tile -->
+                <div class="bg-slate-800 p-8 rounded-xl shadow-lg flex flex-col" style="height: 400px;">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-400">Extracurriculars</h2>
+                    <div id="extracurricular-scroll-content"
+                        class="flex-grow overflow-y-auto space-y-8 pr-4 custom-scrollbar">
+                        <div class="bg-slate-700 p-6 rounded-xl shadow-md">
+                            <h3 class="text-2xl font-semibold mb-2 text-blue-300">NSS Community Service Volunteer
+                            </h3>
+                            <p class="text-base md:text-lg">Visited numerous villages, distributed clothes, food &
+                                taught
+                                school children.</p>
+                        </div>
+                        <div class="bg-slate-700 p-6 rounded-xl shadow-md">
+                            <h3 class="text-2xl font-semibold mb-2 text-blue-300">Ankan Ratna</h3>
+                            <p class="text-base md:text-lg">Completed Diploma in Fine Arts with distinction.</p>
+                        </div>
+
+                        <div class="bg-slate-700 p-6 rounded-xl shadow-md">
+                            <h3 class="text-2xl font-semibold mb-2 text-blue-300">Associate, Techniche and Alcheringa
+                            </h3>
+                            <p class="text-base md:text-lg">Associated with the largest technical and cultural fests of
+                                North East India.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center mt-4">
+                        <button id="extracurricular-scroll-down-btn" class="scroll-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack Moving Ribbon -->
+        <section class="py-8 px-0 fade-in-section">
+            <div class="max-w-full mx-auto tech-ribbon-container">
+                <div class="tech-ribbon">
+                    <!-- Duplicate content for seamless loop -->
+                    <div class="tech-item">
+                        <img src="images/notion.png" alt="Notion Logo" class="w-10 h-10">
+                        Notion
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/figma.png" alt="Figma Logo" class="w-10 h-10">
+                        Figma
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/jira.png" alt="Jira Logo" class="w-10 h-10">
+                        Jira
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/python.png" alt="Python Logo" class="w-10 h-10">
+                        Python
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/power BI.png" alt="Power BI Logo" class="w-10 h-10">
+                        Power BI
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/SQL.png" alt="SQL Logo" class="w-10 h-10">
+                        SQL
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/amplitude.png" alt="Amplitude Logo" class="w-10 h-10">
+                        Amplitude
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/googleanalytics.png" alt="Google Analytics Logo" class="w-10 h-10">
+                        Google Analytics
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/HTML.png" alt="HTML/CSS Logo" class="w-10 h-10">
+                        HTML/CSS
+                    </div>
+                    <!-- Duplicate the entire set of tech items for seamless scrolling -->
+                    <div class="tech-item">
+                        <img src="images/notion.png" alt="Notion Logo" class="w-10 h-10">
+                        Notion
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/figma.png" alt="Figma Logo" class="w-10 h-10">
+                        Figma
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/jira.png" alt="Jira Logo" class="w-10 h-10">
+                        Jira
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/python.png" alt="Python Logo" class="w-10 h-10">
+                        Python
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/power BI.png" alt="Power BI Logo" class="w-10 h-10">
+                        Power BI
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/SQL.png" alt="SQL Logo" class="w-10 h-10">
+                        SQL
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/amplitude.png" alt="Amplitude Logo" class="w-10 h-10">
+                        Amplitude
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/googleanalytics.png" alt="Google Analytics Logo" class="w-10 h-10">
+                        Google Analytics
+                    </div>
+                    <div class="tech-item">
+                        <img src="images/HTML.png" alt="HTML/CSS Logo" class="w-10 h-10">
+                        HTML/CSS
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Professional Journey Section -->
+        <section id="professional-journey" class="py-16 px-6 md:px-12 shadow-inner fade-in-section">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                <!-- My Experiences Box -->
+                <div class="bg-slate-700 p-8 rounded-xl shadow-lg flex flex-col" style="height: auto;">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-400">My Experiences</h2>
+                    <div id="my-experiences-scroll-content" class="flex-grow space-y-8 pr-4">
+                        <!-- Experience 1 -->
+                            <div class="flip-card" style="height: 200px;">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <h3 class="text-2xl font-semibold mb-2 text-blue-300">Equity Research Intern</h3>
+                                        <p class="text-xl md:text-2xl text-blue-100 font-serif italic mb-8 text-center">
+                                            Invest My Funds</p>
+                                        <p class="text-base md:text-lg">May 2025 - June 2025</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Work Details:</h3>
+                                        <ul
+                                            class="list-disc list-inside text-base font-serif italic md:text-0.95g text-justify">
+                                            <li>Built stock reports and dashboards using APIs & web scraping to fetch
+                                                real-time mutual fund portfolio data via Python.
+                                            </li>
+                                            <li>Selected stocks based on performance; conducted in-depth research supporting
+                                                Fundamental Analysis, SWOT and Competitor Analysis.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Experience 2-->
+                            <div class="flip-card" style="height: 200px;">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <h3 class="text-2xl font-semibold mb-2 text-blue-300">Product Management Intern
+                                        </h3>
+                                        <p class="text-xl md:text-2xl text-blue-100 font-serif italic mb-8 text-center">
+                                            Aikyam Life Solutions</p>
+                                        <p class="text-base md:text-lg">May 2024 - Oct. 2024</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Work Details:</h3>
+                                        <ul
+                                            class="list-disc list-inside text-base font-serif italic md:text-0.95g text-justify">
+                                            <li>Built a marketplace for 50+ indie brands, targeting 30% higher
+                                                visibility
+                                                and revenue via GTM strategies and competitor analysis (15+ competitorS,
+                                                10+
+                                                segments).
+                                            </li>
+                                            <li>Designed acquisition features for 100+ products, aiming for 25% CAC
+                                                reduction through data-driven innovation.</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Experience 2 -->
+                            <div class="flip-card" style="height: 200px;">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <h3 class="text-2xl font-semibold mb-2 text-blue-300">CEO's Office Intern</h3>
+                                        <p class="text-xl md:text-2xl text-blue-100 font-serif italic mb-8 text-center">
+                                            Get
+                                            Curious Education Pvt. Ltd.</p>
+                                        <p class="text-base md:text-lg">Dec. 2023 - Jan. 2024</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Work Details:</h3>
+                                        <ul
+                                            class="list-disc list-inside text-base font-serif italic md:text-0.95g text-justify">
+                                            <li>Promoted the mobile app on campus, driving 1000+ downloads in 1 month
+                                                through content, UI/UX improvements, and user feedback.</li>
+                                            <li>Managed social media, boosting user engagement by 30% via strategic
+                                                content
+                                                and community interaction.</li>
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Removed scroll button for My Experiences -->
+                    </div>
+
+                    <!-- My PORs Box -->
+                    <div class="bg-slate-700 p-8 rounded-xl shadow-lg flex flex-col" style="height: auto;">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-blue-400">My PORs</h2>
+                        <div id="my-pors-scroll-content" class="flex-grow space-y-8 pr-4">
+                            <!-- POR 1 -->
+                            <div class="flip-card" style="height: 200px;">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <h3 class="text-2xl font-semibold mb-2 text-blue-300">Lead Student Coordinator
+                                        </h3>
+                                        <p class="text-xl md:text-2xl text-blue-100 font-serif italic mb-8 text-center">
+                                            Centre for Career Development, IIT Guwahati</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Responsibilities:</h3>
+                                        <ul
+                                            class="list-disc list-inside text-base font-serif italic md:text-0.95g text-left">
+                                            <li>Spearheading CCD’s digital presence, corporate outreach, MoUs,
+                                                placements,
+                                                and internships to boost IIT Guwahati’s global visibility.</li>
+                                            <li>Leading leadership summits, curating brochures & newsletters to
+                                                strengthen
+                                                IIT Guwahati’s brand and student career opportunities.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- POR 2-->
+                            <div class="flip-card" style="height: 200px;">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <h3 class="text-2xl font-semibold mb-2 text-blue-300">Capital Head</h3>
+                                        <p class="text-xl md:text-2xl text-blue-100 font-serif italic mb-8 text-center">
+                                            Finance & Economics Club, IIT Guwahati</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Responsibilities:</h3>
+                                        <ul
+                                            class="list-disc list-inside text-base font-serif italic md:text-0.95g text-left">
+                                            <li>Mentored 50+ sophomores in DCF modeling, equity research; led 10+ global
+                                                case competitions fostering competitive spirit.</li>
+                                            <li>Executed MnAnalyse & Equity Research Challenge with 1000+ participants,
+                                                enhancing IIT Guwahati’s finance ecosystem visibility.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- POR 3-->
+                            <div class="flip-card" style="height: 200px;">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <h3 class="text-2xl font-semibold mb-2 text-blue-300">Manager, Udgam (2024)</h3>
+                                        <p class="text-xl md:text-2xl text-blue-100 font-serif italic mb-8 text-center">
+                                            Entrepreneurship Cell, IIT Guwahati</p>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-xl font-semibold mb-2 text-blue-300">Responsibilities:</h3>
+                                        <ul
+                                            class="list-disc list-inside text-base font-serif italic md:text-0.95g text-left">
+                                            <li>Led 30+ team, managed PR, branding; promoted nationwide and attracted
+                                                3000+
+                                                participants to the flagship event.</li>
+                                            <li>Fostered entrepreneurial growth, innovation, and strong nationwide
+                                                engagement through strategic outreach and brand positioning.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-16 px-6 md:px-12 fade-in-section">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-blue-400">Featured Projects</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                    <div
+                        class="bg-slate-700 rounded-xl shadow-xl overflow-hidden transform transition-all duration-300">
+                        <div class="relative">
+                            <img src="images/D11.jpeg" alt="Dream11 Project" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-2 text-blue-300">Dream11: Predictive Team Builder</h3>
+                            <p class="text-slate-300 text-base mb-4">Developed a tool using Cricsheet & AI to recommend
+                                top 11 players. Led 500+ user survey and MVP launch.</p>
+                            <a href="https://drive.google.com/file/d/19nnEq4TbmRrAWg-reQ3EI4Rd_x3hBK3K/view"
+                                target="_blank" class="btn-outline text-sm py-2 px-4">View Project</a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div
+                        class="bg-slate-700 rounded-xl shadow-xl overflow-hidden transform transition-all duration-300">
+                        <div class="relative">
+                            <img src="images/INA.jpg" alt="Solar Project" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-2 text-blue-300">Solar Panel Recycling Strategy</h3>
+                            <p class="text-slate-300 text-base mb-4">Projected solar waste till 2050 using Weibull
+                                function and proposed recycling infrastructure, winning Bronze.</p>
+                            <a href="https://drive.google.com/drive/folders/1otgBWXH9qxUehAbhzZYPq5s2MMrTXVCC"
+                                target="_blank" class="btn-outline text-sm py-2 px-4">View Project</a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 (New Placeholder) -->
+                    <div
+                        class="bg-slate-700 rounded-xl shadow-xl overflow-hidden transform transition-all duration-300">
+                        <div class="relative">
+                            <img src="images/product1.jpg" alt="Analytics Dashboard" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-2 text-blue-300">Product Teardown</h3>
+                            <p class="text-slate-300 text-base mb-4">Suggested new features, wireframes, prioritization
+                                and surveyed users for Spring Money app.</p>
+                            <a href="https://drive.google.com/file/d/1YHwZepc0BveMcr77N4eJ2S06iqxXY9cB/view"
+                                target="_blank" class="btn-outline text-sm py-2 px-4">View Project</a>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 4 (New Placeholder) -->
+                    <div
+                        class="bg-slate-700 rounded-xl shadow-xl overflow-hidden transform transition-all duration-300">
+                        <div class="relative">
+                            <img src="images/EV.jpg" alt="Onboarding Redesign" class="w-full h-48 object-cover">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-2 text-blue-300">EV Market Research Analysis</h3>
+                            <p class="text-slate-300 text-base mb-4">Estimated EV market size with scoping, data prep,
+                                modeling, and findings report.</p>
+                            <a href="https://github.com/Anirban-1802/EV_Market_Research_Analysis" target="_blank"
+                                class="btn-outline text-sm py-2 px-4">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <a href="https://github.com/Anirban-1802" target="_blank" class="btn-primary">View More Projects</a>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- Achievements Section (Last Section) -->
+        <section id="achievements" class="py-16 px-6 md:px-12 fade-in-section">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center text-blue-400">Key Achievements</h2>
+                <div class="achievement-carousel-container">
+                    <div class="achievement-carousel">
+                        <!-- Achievement Card 1 -->
+                        <div class="achievement-slide">
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front"
+                                        style="background-image: url('images/image_bombay1.jpg');">
+
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-2xl font-bold text-blue-300 mb-2">Inter IIT Tech Meet 13.0
+                                            (2024)
+                                        </h3>
+                                        <p class="text-slate-300 text-center">Won Bronze medals in Energy Consulting and
+                                            Product Development among 23 IITs, showcasing strong problem-solving and
+                                            innovation skills.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="achievement-slide">
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front"
+                                        style="background-image: url('images/image_guwahati.jpg');">
+
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-2xl font-bold text-blue-300 mb-2">Quiz Competition</h3>
+                                        <p class="text-slate-300 text-center">Secured 3rd place in Sci-Tech Quiz &
+                                            ranked among top 5 in Business Quiz, highlighting diverse
+                                            knowledge and quick thinking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Achievement Card 2 -->
+                        <div class="achievement-slide">
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front"
+                                        style="background-image: url('images/WhatsApp\ Image\ 2025-06-06\ at\ 19.40.51_0923b94d.jpg');">
+
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-2xl font-bold text-blue-300 mb-2">Creative Shock (2023)</h3>
+                                        <p class="text-slate-300 text-center">Ranked 16 globally in the Social Business
+                                            Case Competition, among 3000+ participants, demonstrating strong analytical
+                                            and strategic thinking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Achievement Card 3 -->
+                        <div class="achievement-slide">
+                            <div class="flip-card">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front"
+                                        style="background-image: url('images/WhatsApp\ Image\ 2025-06-06\ at\ 19.36.15_6bcf868e.jpg');">
+
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h3 class="text-2xl font-bold text-blue-300 mb-2">AISSE AIR 5</h3>
+                                        <p class="text-slate-300 text-center">Ranked 5th All India in CBSE Class 10th
+                                            Board Examination</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="carousel-dots"></div>
+            </div>
+        </section>
+
+
+        <!-- Combined Blogs and Contact Section -->
+        <section id="contact-blogs-section" class="py-16 px-6 md:px-12 fade-in-section">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+
+                <!-- Contact Section (Tile 1) - Now a Flip Card -->
+                <div class="bg-transparent rounded-xl shadow-lg flex flex-col" style="height: auto;">
+                    <div class="flip-card-contact">
+                        <div class="flip-card-inner-contact bg-slate-700 rounded-xl shadow-lg">
+                            <!-- Front of the Contact Flip Card -->
+                            <div class="flip-card-front-contact p-8 flex flex-col text-left">
+                                <h2 class="text-3xl md:text-4xl font-bold mb-8 text-blue-400">Get in Touch</h2>
+                                <p class="text-lg md:text-xl text-slate-300 mb-4">I'm always open to discussing new
+                                    opportunities, collaborations, or just sharing insights on product and tech.</p>
+                                <div class="space-y-3 mb-8">
+                                    <p class="text-xl md:text-2xl font-medium text-purple-300">📞 +91-9434603314</p>
+                                    <p class="text-xl md:text-2xl font-medium text-purple-300">📧 <a
+                                            href="mailto:g.anirban@iitg.ac.in"
+                                            class="hover:underline">g.anirban@iitg.ac.in</a> / <a
+                                            href="mailto:aghoshiitg@gmail.com"
+                                            class="hover:underline">aghoshiitg@gmail.com</a></p>
+                                    <div class="flex items-center gap-4 mt-4">
+                                        <a href="https://linkedin.com/in/anirbanghoshiitg" target="_blank"
+                                            rel="noopener noreferrer">
+                                            <img src="https://placehold.co/32x32/0A66C2/FFFFFF?text=LI"
+                                                alt="LinkedIn Logo" class="w-8 h-8 rounded-md">
+                                        </a>
+                                        <a href="https://twitter.com/yourprofile" target="_blank"
+                                            rel="noopener noreferrer">
+                                            <img src="https://placehold.co/32x32/1DA1F2/FFFFFF?text=TW"
+                                                alt="Twitter Logo" class="w-8 h-8 rounded-md">
+                                        </a>
+                                        <a href="https://instagram.com/yourprofile" target="_blank"
+                                            rel="noopener noreferrer">
+                                            <img src="https://placehold.co/32x32/E4405F/FFFFFF?text=IG"
+                                                alt="Instagram Logo" class="w-8 h-8 rounded-md">
+                                        </a>
+                                    </div>
+                                </div>
+                                <button id="flipToFormBtn" class="btn-primary self-start">Let's Connect!</button>
+                            </div>
+
+                            <!-- Back of the Contact Flip Card (Google Form Embed) -->
+                            <div class="flip-card-back-contact p-8 flex flex-col justify-center items-center text-left">
+
+                                <!-- Placeholder for Google Form Embed Code -->
+                                <div id="googleFormEmbed"
+                                    class="w-full h-full flex flex-col items-center justify-center">
+
+                                    <!-- PASTE YOUR GOOGLE FORM EMBED CODE HERE -->
+                                    <!-- Example:
+                                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSc_xxxxxxxxxxxxxxxxxxxxxxx/viewform?embedded=true" width="640" height="480" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                                    --><iframe
+                                        src="https://docs.google.com/forms/d/e/1FAIpQLSfXDEium77KMsMoH8Do4k22HRY0lpHZ2Okp3IF2-at6_ohTRw/viewform?embedded=true"
+                                        width="550" height="700" frameborder="0" marginheight="0"
+                                        marginwidth="0">Loading…</iframe>
+                                    <button type="button" id="flipToContactBtn"
+                                        class="btn-outline text-sm py-2 px-4 mt-4">Back to Contact</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blogs Section (Tile 2) -->
+                <div class="bg-slate-700 rounded-xl shadow-lg overflow-hidden flex flex-col">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6 text-center text-blue-400 p-6 pb-0">My Latest
+                        Insights</h2>
+                    <div class="flex-grow flex flex-col justify-center items-center p-6 pt-0">
+                        <img src="images/image.png" alt="Recent Blog Post"
+                            class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-2xl font-semibold mb-3 text-blue-300 text-center">Market Sizing
+                        </h3>
+                        <p class="text-slate-300 text-base mb-4 text-center">Broke down Market Sizing (TAM, SAM, SOM)
+                            for my hypothetical fitness app *HealthDost* using data-backed assumptions, desi humour, and
+                            a FigJam triangle.
+                        </p>
+                        <a href="https://www.linkedin.com/posts/anirbanghoshiitg_healthdostmarketsize-activity-7336444676545069057-yEnE?utm_source=share&utm_medium=member_desktop&rcm=ACoAADky7OcBuTfb3gV2mpsijUgLe52TxGDGpKQ"
+                            target="_blank" class="btn-outline text-sm py-2 px-4">Read More</a>
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="py-8 px-6 md:px-12 text-center text-slate-400 text-sm md:text-base border-t border-slate-700">
+            <p>&copy; 2025 Anirban Ghosh — Crafted with Curiosity & Code 🛠️</p>
+        </footer>
+
+        <!-- Project Modal Structure -->
+        <div id="projectModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-overlay">
+            <div
+                class="bg-slate-800 rounded-xl shadow-2xl max-w-lg w-full p-6 md:p-8 relative transform scale-95 opacity-0 transition-all duration-300 ease-out">
+                <button class="absolute top-4 right-4 text-slate-400 hover:text-slate-200 text-2xl font-bold"
+                    id="closeModalBtn">&times;</button>
+                <h3 id="modalTitle" class="text-2xl md:text-3xl font-bold mb-4 text-blue-400"></h3>
+                <p id="modalDescription" class="text-slate-300 text-base md:text-lg mb-6"></p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a id="modalGithub" href="#" target="_blank"
+                        class="btn-outline text-sm py-2 px-4 flex items-center justify-center">
+                        <!-- GitHub Icon (inline SVG) -->
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.499.09.679-.217.679-.481 0-.237-.008-.865-.013-1.703-2.782.602-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.618.069-.606.069-.606 1.003.07 1.531 1.032 1.531 1.032.892 1.529 2.341 1.089 2.91.835.09-.647.35-1.089.636-1.338-2.22-.253-4.555-1.113-4.555-4.931 0-1.091.39-1.984 1.029-2.682-.103-.253-.446-1.272.098-2.65 0 0 .84-.268 2.75 1.022A9.606 9.606 0 0112 6.865c.85.004 1.705.115 2.504.337 1.909-1.29 2.747-1.022 2.747-1.022.546 1.379.202 2.398.099 2.65a3.79 3.79 0 011.029 2.682c0 3.823-2.339 4.675-4.562 4.922.357.307.678.915.678 1.846 0 1.334-.012 2.41-.012 2.727 0 .268.18.58.685.475C21.133 20.19 24 16.425 24 12.017 24 6.484 19.522 2 14 2h-2z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        GitHub
+                    </a>
+                    <a id="modalLive" href="#" target="_blank"
+                        class="btn-primary text-sm py-2 px-4 flex items-center justify-center">
+                        <!-- External Link Icon (inline SVG) -->
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+                        </svg>
+                        View Project
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const projectCards = document.querySelectorAll('.project-card-hover');
+            const projectModal = document.getElementById('projectModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalGithub = document.getElementById('modalGithub');
+            const modalLive = document.getElementById('modalLive');
+
+            // --- Project Modal Functionality ---
+            projectCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const title = card.dataset.title;
+                    const description = card.dataset.description;
+                    const github = card.dataset.github;
+                    const live = card.dataset.live;
+
+                    modalTitle.textContent = title;
+                    modalDescription.textContent = description;
+                    modalGithub.href = github;
+                    modalLive.href = live;
+
+                    projectModal.classList.remove('hidden');
+                    projectModal.classList.add('flex');
+                    setTimeout(() => {
+                        projectModal.querySelector('div').classList.remove('scale-95', 'opacity-0');
+                        projectModal.querySelector('div').classList.add('scale-100', 'opacity-100');
+                    }, 10);
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+
+            const closeProjectModal = () => {
+                projectModal.querySelector('div').classList.remove('scale-100', 'opacity-100');
+                projectModal.querySelector('div').classList.add('scale-95', 'opacity-0');
+                setTimeout(() => {
+                    projectModal.classList.add('hidden');
+                    projectModal.classList.remove('flex');
+                    document.body.style.overflow = '';
+                }, 300);
+            };
+
+            closeModalBtn.addEventListener('click', closeProjectModal);
+            projectModal.addEventListener('click', (e) => {
+                if (e.target === projectModal) {
+                    closeProjectModal();
+                }
+            });
+
+            // --- Scroll-based Fade-in Animations ---
+            const fadeSections = document.querySelectorAll('.fade-in-section');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const sectionObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            fadeSections.forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+            // --- Typing Effect for Hero Subtitle ---
+            const dynamicSubtitleElement = document.getElementById('dynamic-subtitle');
+            const phrases = ["Product Management", "Analytics", "Business Development", "Finance & Data Science"];
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            const typingSpeed = 70; // milliseconds per character
+            const deletingSpeed = 35; // milliseconds per character
+            const pauseBeforeDelete = 500; // 0.5 seconds pause after typing
+            const pauseBeforeType = 250; // Shorter pause before typing next phrase
+
+            function typeAndDelete() {
+                const currentPhrase = phrases[phraseIndex];
+
+                if (isDeleting) {
+                    dynamicSubtitleElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    dynamicSubtitleElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                let typeSpeed = isDeleting ? deletingSpeed : typingSpeed;
+
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    typeSpeed = pauseBeforeDelete; // Pause after typing
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    typeSpeed = pauseBeforeType; // Pause before typing next
+                }
+
+                setTimeout(typeAndDelete, typeSpeed);
+            }
+
+            typeAndDelete(); // Start the typing effect
+
+            // --- Achievement Carousel ---
+            const carousel = document.querySelector('.achievement-carousel');
+            const slides = document.querySelectorAll('.achievement-slide');
+            const dotsContainer = document.querySelector('.carousel-dots');
+            let currentIndex = 0;
+            const slideIntervalTime = 2000; // 2 seconds
+            let slideInterval;
+            let slidesPerPage = 1; // Default for small screens
+
+            function getSlidesPerPage() {
+                // Determine slides per page based on screen width
+                return window.innerWidth >= 768 ? 2 : 1; // 2 slides for md and up, 1 for smaller
+            }
+
+            function createDots() {
+                dotsContainer.innerHTML = ''; // Clear existing dots
+                const totalPages = Math.ceil(slides.length / slidesPerPage);
+                for (let i = 0; i < totalPages; i++) {
+                    const dot = document.createElement('span');
+                    dot.classList.add('dot');
+                    dot.dataset.pageIndex = i; // Store page index
+                    dot.addEventListener('click', (event) => {
+                        clearInterval(slideInterval); // Stop auto-advance
+                        const pageIndex = parseInt(event.target.dataset.pageIndex);
+                        showSlide(pageIndex * slidesPerPage); // Go to the first slide of that page
+                        startAutoSlide(); // Restart auto-advance
+                    });
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            function showSlide(index) {
+                const totalPages = Math.ceil(slides.length / slidesPerPage);
+                let targetPageIndex = Math.floor(index / slidesPerPage);
+
+                if (targetPageIndex >= totalPages) {
+                    targetPageIndex = 0; // Loop back to the first page
+                } else if (targetPageIndex < 0) {
+                    targetPageIndex = totalPages - 1; // Loop to the last page
+                }
+
+                currentIndex = targetPageIndex * slidesPerPage; // Update global currentIndex
+
+                // Calculate offset for 2 slides at a time (or 1 for mobile)
+                const offset = -targetPageIndex * 100; // Each "page" is 100% of the carousel container width
+                carousel.style.transform = `translateX(${offset}%)`;
+
+                // Update active dots
+                const dots = document.querySelectorAll('.carousel-dots .dot');
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === targetPageIndex);
+                });
+            }
+
+            function nextSlide() {
+                showSlide(currentIndex + slidesPerPage); // Advance by slidesPerPage
+            }
+
+            function startAutoSlide() {
+                clearInterval(slideInterval); // Clear any existing interval
+                slideInterval = setInterval(nextSlide, slideIntervalTime);
+            }
+
+            function initializeCarousel() {
+                const newSlidesPerPage = getSlidesPerPage();
+                if (newSlidesPerPage !== slidesPerPage) { // Only re-initialize if slidesPerPage changes
+                    slidesPerPage = newSlidesPerPage;
+                    currentIndex = 0; // Reset index when breakpoint changes
+                }
+                createDots();
+                showSlide(currentIndex); // Show current slide, adjusting for new slidesPerPage
+                startAutoSlide();
+            }
+
+            // Initial setup
+            initializeCarousel();
+
+            // Handle resize events
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Check if slidesPerPage needs to change on resize
+                    const currentSlidesPerPage = getSlidesPerPage();
+                    if (currentSlidesPerPage !== slidesPerPage) {
+                        initializeCarousel(); // Re-initialize if breakpoint changes
+                    }
+                }, 250); // Debounce resize event
+            });
+
+            // Pause/Resume on hover for the entire carousel container
+            const carouselContainer = document.querySelector('.achievement-carousel-container');
+            carouselContainer.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            carouselContainer.addEventListener('mouseleave', startAutoSlide);
+
+            // --- Generic Scroll Button Functionality for multiple sections ---
+            function setupScrollButton(scrollContentId, scrollButtonId) {
+                const scrollContent = document.getElementById(scrollContentId);
+                const scrollButton = document.getElementById(scrollButtonId);
+
+                if (scrollContent && scrollButton) {
+                    const itemHeight = 200; // Approximate height of a flip card, adjust if needed
+
+                    scrollButton.addEventListener('click', () => {
+                        scrollContent.scrollBy({
+                            top: itemHeight,
+                            behavior: 'smooth'
+                        });
+                    });
+
+                    // Update button visibility on scroll
+                    scrollContent.addEventListener('scroll', () => {
+                        // Check if scrolled to the very bottom (within a small threshold)
+                        if (scrollContent.scrollHeight - scrollContent.scrollTop - scrollContent.clientHeight < 5) {
+                            scrollButton.style.display = 'none';
+                        } else {
+                            scrollButton.style.display = 'flex';
+                        }
+                    });
+
+                    // Initial check for button visibility
+                    if (scrollContent.scrollHeight <= scrollContent.clientHeight) {
+                        scrollButton.style.display = 'none';
+                    } else {
+                        scrollButton.style.display = 'flex';
+                    }
+                }
+            }
+
+            setupScrollButton('extracurricular-scroll-content', 'extracurricular-scroll-down-btn');
+            // --- Removed Generic Scroll Button Functionality for multiple sections ---
+            // The scroll buttons and related JS for 'extracurricular-scroll-content',
+            // 'my-experiences-scroll-content', and 'my-pors-scroll-content' have been removed.
+            // These sections will now expand to show all content without scrolling.
+
+            // --- Contact Form Flip Functionality (for Google Form) ---
+            const flipCardInnerContact = document.querySelector('.flip-card-inner-contact');
+            const flipToFormBtn = document.getElementById('flipToFormBtn');
+            const flipToContactBtn = document.getElementById('flipToContactBtn');
+            // const messageBox = document.getElementById('messageBox'); // Removed as Google Forms handles its own feedback
+
+            if (flipToFormBtn && flipCardInnerContact) {
+                flipToFormBtn.addEventListener('click', () => {
+                    flipCardInnerContact.classList.add('flipped');
+                });
+            }
+
+            if (flipToContactBtn && flipCardInnerContact) {
+                flipToContactBtn.addEventListener('click', () => {
+                    flipCardInnerContact.classList.remove('flipped');
+                });
+            }
+
+        });
+    </script>
+</body>
+
+</html>
